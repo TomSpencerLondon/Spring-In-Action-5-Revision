@@ -13,10 +13,16 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  @Bean
-  public UserDetailsService userDetailsService() {
-    InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-    manager.createUser(User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build());
-    return manager;
+
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.inMemoryAuthentication()
+        .withUser("buzz")
+        .password("{noop}infinity")
+        .authorities("ROLES_USER")
+        .and()
+        .withUser("woody")
+        .password("{noop}bullseye")
+        .authorities("ROLE_USER");
   }
 }
